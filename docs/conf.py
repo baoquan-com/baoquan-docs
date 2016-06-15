@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # baoquan documentation build configuration file, created by
-# sphinx-quickstart on Wed Jun 15 19:08:07 2016.
+# sphinx-quickstart on Mon May 30 20:59:18 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,6 +19,7 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import sphinx_rtd_theme
 
 # -- General configuration ------------------------------------------------
 
@@ -48,9 +49,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'baoquan'
-copyright = u'2016, sbwdlihao'
-author = u'sbwdlihao'
+project = u'保全网'
+copyright = u'2016, 保全网'
+author = u'baoquan.com'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -66,7 +67,7 @@ release = u'1.0'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'zh_CN'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -119,7 +120,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -128,12 +129,12 @@ html_theme = 'alabaster'
 # html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-# html_theme_path = []
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = u'baoquan v1.0'
+# html_title = u'baoquan vv1.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -260,7 +261,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'baoquan.tex', u'baoquan Documentation',
-     u'sbwdlihao', 'manual'),
+     u'baoquan.com', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
