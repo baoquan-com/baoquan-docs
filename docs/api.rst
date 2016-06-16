@@ -1,45 +1,45 @@
-接口
+Interface
 ===============
 
-保全 - /attestations
-----------------------
+Attestations - /attestations
+--------------------------------------------
 
-客户在保全网站上建好模板之后通过该接口传输模板渲染需要的数据。
+When member created the template on Baoquan.com, he/she/it can send data, which is required by consummating the template, through this interface.
 
 payload
 ^^^^^^^^^^^^^^^
 
-=================  ================================ ================
-参数名 				描述                             是否可选
-=================  ================================ ================
-template_id        String字符串，模板id               必选
-identities         Object对象，身份事项               必选
-factoids           数组对象，陈述集                   必选
-completed          Boolean值，是否完成陈述集的上传     可选，默认为true
-attachments        数组对象，附件的校验码，可选         可选
-=================  ================================ ================
+=================  ============================================================== ================================
+Parameter name     Description                                                     Mandatory/Optional
+=================  ============================================================== ================================
+template_id        String, the ID of template                                      Mandatory
+identities         Object, item for identities                                     Mandatory
+factoids           Array, factoids set                                             Optional
+completed          Boolean value, whether factoids set is uploaded successfully     Optional, default is true
+attachments        Array, check code of attachments, optional                      Optional
+=================  ============================================================== ================================
 
-**陈述** 是一个Object对象，包含type和data两个字段，例如::
+**Factoid** is an Object, which contains two fields: “type”, “data”, for example::
 
 	{
 		"type": "hash",
 		"data": {
-			"userName": "张三",
+			"userName": "David Smith",
 			"idCard": "42012319800127691X"
 		}
 	}
 
-其中type是用户定义的陈述名称，data是陈述的字段值，如下图所示：
+The “type” is the user defined name of factoids, “data” is the field value of factoids, as following：
 
 .. image:: images/use_template.png
 
-模板中包含common和hash两个陈述。common中的attestation_no(保全号)、attestation_at(保全时间)、product_name(产品名称)、organization_name(组织名称)在模板渲染时由保全网提供。hash这个陈述是客户自己定义的，所以需要客户通过API上传。
+The template contains two factoids: “common” and ”hash”. attestation_no, attestation_at, product_name, organization_name in the “common” are provided by Baoquan.com when you are consummating the template. “hash” is defined by members selves, therefore, ,members need to upload that through API.
 
-模板中可能包含多个客户自定义的陈述，比如factoA和factoB，此时客户可以选择分两次上传，第一次上传factoA，并设置completed为false，第二次上传factoB，并设置completed为true。
+Template could contain multiple customisable factoids, for example, factoA and factoB. Members could choose to upload twice separately: upload factoA first and set “completed” to false, and then upload factoB again, set “completed” to true.
 
-.. note:: 一旦completed设置为true，则不再接受陈述上传。
+.. note:: Once “completed” has been set to true, no more factoids uploading will be accepted.
 
-假定payload如下所示::
+Assume payload is as below::
 
 	{
 		"template_id": "2hSWTZ4oqVEJKAmK2RiyT4",
@@ -51,7 +51,7 @@ attachments        数组对象，附件的校验码，可选         可选
 			{
 				"type": "hash",
 				"data": {
-					"userName": "李三",
+					"userName": "Richard Hammond",
 					"idCard": "330124199501017791",
 					"buyAmount": 0.3,
 					"incomeStartTime": "2015-12-02",
@@ -65,16 +65,16 @@ attachments        数组对象，附件的校验码，可选         可选
 		"completed": true
 	}
 
-经过保全后，在保全网上可以通过保全号查看经过渲染后的内容，类似下图所示：
+After Attestations, you can check the consummated content on Baoquan.com by reference number. As shown below:
 
 .. image:: images/render_template.png
 
-附件
+Attachments
 ^^^^^^^^^^^^^^^
 
-在上传陈述数据的时候可以同时上传跟该陈述相关的附件，在payload中 **attachments** 存放的是附件的校验码。
+When you uploading the factoids data, you can upload attachments related to the factoids simultaneously. In payload, the “attachments” store the check code of attachments.
 
-form表单形式上传单个附件::
+Upload a single attachment as “form” data::
 
 	<form method='post' enctype='multipart/form-data'>
 	  ...
@@ -96,7 +96,7 @@ form表单形式上传单个附件::
 		}
 	}
 
-form表单形式上传多个附件::
+Upload multiple attachments as “form” data::
 
 	<form method='post' enctype='multipart/form-data'>
 	  ...
@@ -125,31 +125,31 @@ form表单形式上传多个附件::
 		}
 	}
 
-attachments中的key对应的是factoids数组的角标。
+The “key” of “attachments” is referring as the superscript of the factoids array.
 
-附件的checkSum是对文件进行SHA256产生的，以Java为例::
+The “checksum” is generated from file by SHA256, take Java as an example::
 
 	String file = "/path/to/file";
 	InputStream in = new FileInputStream(new File(file));
 
-	// 使用SHA256对文件进行hash
+	// Use SHA256 to hash the file
 	bytes[] digestBytes = DigestUtils.getDigest("SHA256").digest(StreamUtils.copyToByteArray(in));
 
-	// 将bytes转换成16进制
+	// Transform bytes into hexadecimal
 	String checkSum = Hex.encodeHexString(digestBytes);
 
-返回的data
+Returned data
 ^^^^^^^^^^^^^^
 
-调用保全接口成功后会返回保全号
+When Attestation interface is requested successfully, the reference number will be returned.
 
-=================  ================================
-字段名 				描述                            
-=================  ================================
-no                 String字符串，保全号                                         
-=================  ================================
+=================  ================================================================
+Field name 		   Description                            
+=================  ================================================================
+no                 String, reference number of the attestation                                        
+=================  ================================================================
 
-例如::
+For example::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
@@ -158,24 +158,24 @@ no                 String字符串，保全号
 		}
 	}
 
-追加陈述 - /factoids
-----------------------
+Add factoids - /factoids
+--------------------------------------------
 
-客户可以使用追加陈述接口上传陈述集
+Members could use Factoids interface to upload more factoids set.
 
 payload
 ^^^^^^^^^^^^^^^
 
-=================  ================================ ================
-参数名 				描述                             是否可选
-=================  ================================ ================
-ano                String字符串，保全号               必选
-factoids           数组对象，陈述集                   必选
-completed          Boolean值，是否完成陈述集的上传     可选，默认为true
-attachments        数组对象，附件的校验码，可选         可选
-=================  ================================ ================
+=================  ================================================================ ================================
+Parameter name 	   Description                                                      Mandatory/Optional
+=================  ================================================================ ================================
+ano                String, the ID of attestation                                    Mandatory
+factoids           Array, factoids set                                              Mandatory
+completed          Boolean value, whether factoids set is uploaded successfully     Optional, default is true
+attachments        Array, checksum code of attachments, optional                    Optional
+=================  ================================================================ ================================
 
-例如::
+For example::
 
 	{
 		"ano": "2hSWTZ4oqVEJKAmK2RiyT4",
@@ -183,7 +183,7 @@ attachments        数组对象，附件的校验码，可选         可选
 			{
 				"type": "hash",
 				"data": {
-					"userName": "李三",
+					"userName": "Edward Snow",
 					"idCard": "330124199501017791",
 					"buyAmount": 0.3,
 					"incomeStartTime": "2015-12-02",
@@ -197,16 +197,16 @@ attachments        数组对象，附件的校验码，可选         可选
 		"completed": false
 	}
 
-返回的data
+Returned data
 ^^^^^^^^^^^^^^
 
-=================  ================================
-字段名 				描述                            
-=================  ================================
-success            是否成功，布尔值                                           
-=================  ================================
+=================  ================================================================
+Field name         Description                            
+=================  ================================================================
+success            Boolean, whether successful or not                                           
+=================  ================================================================
 
-例如::
+For example::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",

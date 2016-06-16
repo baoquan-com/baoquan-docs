@@ -1,44 +1,43 @@
-请求
+Request
 ==============
-访问保全网的API需要使用https协议，并进行数字签名。
+The accessing of Baoquan.com API requires https protocol, and digital signature.
 
 
-路径
+Path
 --------------
 
-保全网的API接入分为沙盒环境和正式环境，在正式环境下编辑好的模板可以在沙盒环境下使用，但沙盒环境下的数据可能会被定期清除。
+The accessing of Baoquan.com API are defined as Sandbox environment and Formal environment. A template edited under the Formal environment could be used in the Sandbox environment, however, the data in Sandbox environment will be deleted regularly.
 
-保全网会提供向后兼容的API，不同的API版本会以比如v1、v2.1这样的字符串标记，当前的版本为v1。
+Baoquan.com will provide API with backward compatibility, different API versions will be denoted as strings as v1, v2.1 etc. The current version is v1.
 
-正式环境：`https://baoquan.com/api/v1`
+Formal environment: `https://baoquan.com/api/v1`
 
-沙盒环境：`https://sandbox.baoquan.com/api/v1`
+Sandbox environment: `https://sandbox.baoquan.com/api/v1`
 
-请求路径=API环境+接口名称，比如保全接口的名称是/attestations，则正式环境的请求为
-`https://baoquan.com/api/v1/attestations`
+Request path = API environment + Interface name, for example: The interface of Attestation is /attestations, therefore, the request path in Formal environment is `https://baoquan.com/api/v1/attestations`
 
 
-方法
+Method
 --------------
 
-所有的请求均为HTTP POST方法
+All requests are HTTP POST method.
 
-参数
+Parameters
 --------------
 
 .. _Unix Time: https://en.wikipedia.org/wiki/Unix_time>
 
 =================  =====================================================================================
-参数名 				描述 
+Parameter name 	   Description 
 =================  =====================================================================================
-request_id         请求号，由接入客户创建唯一字符串，长度不超过32位
-access_key         访问识别码，当您在保全网成功上传RSA公钥后会获得一个access_key
-tonce              请求时间, 必须以 `Unix Time`_ 的格式发送, tonce与服务器时间不得超过正负300秒，否则请求将视为无效
-payload            被签名的数据体部分，用JSON进行编码，不同的请求的payload数据一般不同
-signature          使用你的RSA私钥进行签名后的字符串，具体签名的方法后面会进一步描述
+request_id         The id of request. This is the unique string created by accessed Member. The string length is no longer than 32 bits.
+access_key         The access identifier. When you successfully uploaded a RSA public key you will receive an access_key
+tonce              Request time, must be sent in `Unix Time`_ format. The difference between Tonce and server time could not beyond ±300 seconds.
+payload            Signed part of data body, compiled under JSON, different request normally have different payload data.
+signature          Strings singed by your RSA private key, detailed signature method will be described further later.
 =================  ===================================================================================== 
 
-例如::
+For example::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",

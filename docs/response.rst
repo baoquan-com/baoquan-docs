@@ -1,21 +1,21 @@
-返回结果
+Response
 ==============
 
-保全网API的返回结果是一个Json字符串，正常返回时的Http status code为2xx，其它code均表示异常。
+The response of Baoquan.com API is a JSON string. Normal response of HTTP Status Code will be 2xx, except that are error response.
 
-正常返回
---------------
+Normal response
+------------------
 
-正常返回的结果如下表所示：
+Normal response value will be shown as blow:
 
-===========  ================================ 
-字段名        描述 
-===========  ================================ 
-request_id   客户请求id 
-data         有效数据，具体在接口里面描述   
-===========  ================================
+===========  ================================================================
+Field name   Description 
+===========  ================================================================
+request_id   The ID of member’s request
+data         Valid data, details will be described within interface.  
+===========  ================================================================
 
-例如::
+For example::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
@@ -25,33 +25,33 @@ data         有效数据，具体在接口里面描述
 	} 
 
 
-异常返回
---------------
+Error response
+---------------------
 
-异常返回的结果如下表所示：
+Error response will be shown as blow：
 
-===========  ================================ 
-字段名        描述 
-===========  ================================ 
-request_id   客户请求id 
-message      错误原因
-timestamp    时间戳，精确到毫秒
-===========  ================================
+===========  ================================================================ 
+Field name   Description 
+===========  ================================================================ 
+request_id   The ID of member’s request 
+message      Error causes
+timestamp    Timestamp, it has millisecond level accuracy
+===========  ================================================================
 
-异常的Http Status Code
+Error HTTP Status Code
 
-===========  ================================ 
-Code         描述 
-===========  ================================ 
-400          请求错误，比如参数不符合格式 
-404          请求路径不存在
-405          请求方法错误
-413          请求数据过大，比如上传文件过大
-429          请求次数太多
-500          请求失败，比如数字签名未通过   
-===========  ================================
+===========  ====================================================================================
+Code         Description 
+===========  ==================================================================================== 
+400          Request error (eg. Parameter not matched with format requirement) 
+404          Request path not existed
+405          Request method error
+413          Data size requested too large (eg. File uploaded too large on size)
+429          Request amount beyond limitation
+500          Request failed (eg. Digital signature verification failure)   
+===========  ====================================================================================
 
-例如::
+For example::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",

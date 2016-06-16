@@ -49,8 +49,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'保全网'
-copyright = u'2016, 保全网'
+project = u'Baoquan.com'
+copyright = u'2016, baoquan.com'
 author = u'baoquan.com'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -67,7 +67,7 @@ release = u'1.0'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'zh_CN'
+language = 'en_US'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

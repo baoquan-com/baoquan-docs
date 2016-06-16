@@ -1,31 +1,31 @@
-签名
+Signature
 =================
 
-通过API请求保全网时，每一个请求的payload都要用RSA私钥进行签名，这样保全网也无法伪造您的数据。
+When you access Baoquan.com through API, every requested payload need to be signed by RSA private key, so that Baoquan.com cannot falsify your data.
 
-**第一步：登陆保全网，进入组织的控制面板，点开密钥管理。**
+**STEP 1: Log on Baoquan.com, go into the organisation “dashboard”, click the “key management”**
 
 .. image:: images/open_key_manager.png 
 
-**第二步：上传RSA公钥**
+**STEP 2: Upload RSA public key**
 
 .. image:: images/create_key.png 
 
-可以参考如下shell命令制作自己的证书::
+You can refer to the following shell commend to create your own certificate::
 
 	openssl req -x509 -newkey rsa:1024 -nodes -keyout key.pem -out cert.pem
 
-将cert.pem中的内容粘贴到文本框中，然后选择是沙盒还是正式。
+Paste the content of cert.pem file to the text box, and select Sandbox or Formal.
 
-.. note:: 请保管好自己的私钥，另外强烈推荐在正式环境下使用CA机构签发的证书作为公钥。
+.. note:: Please keep your private key safe, in addition, we strongly recommend to use the certificate issued by CA institutes as your public key under the Formal environment.
 
-**第三步：构造签名**
+**STEP 3: Construct signature**
 
-RSA公钥上传成功后会得到一个Access Key，如图所示：
+Once RSA public key has been successfully uploaded, member will obtain a Access Key as shown below:
 
 .. image:: images/use_key.png
 
-假定待签名数据为::
+Assume the data waiting for signature is::
 
 	{
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
@@ -36,12 +36,12 @@ RSA公钥上传成功后会得到一个Access Key，如图所示：
 		}
 	}
 
-签名过程用Java代码描述如下::
+The process of signing described in Java code is as the following::
 
-	// RSA私钥文件路径
+	// RSA Private Key file path
 	String keyFile = "/path/to/rsa_key.pem";
 	
-	// 请求数据
+	// Request Data
 	String requestId = "2XiTgZ2oVrBgGqKQ1ruCKh";
 	String accessKey = "2y7cg8kmoGDrDBXJLaizoD";
 	String tonce = 1464594744;
@@ -52,10 +52,10 @@ RSA公钥上传成功后会得到一个Access Key，如图所示：
 	String apiName = "attestations";
 	String path = String.format("/api/%s/%s", apiVersion, apiName);
 
-	// 待签名数据 = 请求方法+API路径+requestId+accessKey+tonce+payload
+	// Data waiting for signature = request+API Path+requestId+accessKey+tonce+payload
 	String data = "".concat("POST").concat(path).concat(requestId).concat(accessKey).concat(tonce).concat(payload);
 
-	// 构造签名
+	// Build signature
 	PEMReader pemReader = new PEMReader(new InputStreamReader(new FileInputStream(keyFile)));
 	PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(pemReader.readPemObject().getContent());
 	pemReader.close();
@@ -65,10 +65,10 @@ RSA公钥上传成功后会得到一个Access Key，如图所示：
 	signature.initSign(privateKey);
 	signature.update(data.getBytes("UTF-8"));
 
-	// 签名使用Base64编码后得到的值即为请求数据中signature字段的值
+	// After signature encoded by Base64, the value you get is the value of signature field in requested data
 	String signatureEncoded = Base64.getEncoder().encodeToString(signature.sign());
 
-.. note:: 签名所用的方法是SHA256WithRSA，签名数据字符串转换成bytes时要用UTF-8编码格式
+.. note:: The signature method applied is SHA256WithRSA, you need to used UTF-8 encode format to transform signed data from strings to bytes.
 
 
 

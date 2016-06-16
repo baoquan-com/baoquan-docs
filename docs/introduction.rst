@@ -1,7 +1,8 @@
-简介
-=======
+Introduction
+=============
 
-欢迎使用保全网的应用编程接口Baoquan API v1.0! 通过API您可以接入保全网提供的大部分服务。
+Welcome to use the Application Programming Interface of Baoquan.com- Baoquan.com API v1.0! 
+By this API you can access to most services provided by Baoquan.com
 
-Baoquan API v1.0基本遵循RESTful style。请求中的业务数据以JSON格式传递，认证数据以普通HTTP参数传递。处理结果HTTP Status Code表示请求成功(2xx)或者失败，如果失败，会在response body中给出JSON格式的详细错误信息。
+Baoquan.com API v1.0 basically follows RESTful style.  Requesting data will be transferred as JSON format, attesting data will be transferred as HTTP parameters. Processed result HTTP Status Code will demonstrate "Request success (2xx)"or “failed". If "failed", a detailed error message will be sent in response body as JSON format.
 
