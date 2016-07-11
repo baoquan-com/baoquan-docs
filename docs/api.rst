@@ -214,3 +214,149 @@ For example::
 			"success": true,
 		}
 	}
+
+Get attestation data - /attestation
+--------------------------------------
+
+Member can get get the upload attestation data through this API, such as identities, factoids, etc.
+
+payload
+^^^^^^^^^^^^^^^
+
+=================  ============================================  ===============================
+Parameter name 			Description                       							Mandatory/Optional
+=================  ============================================  ===============================
+ano                String, reference number of the attestation      Mandatory
+fields             Array, returned fields              			        Optional, default is true
+=================  ============================================  ===============================
+
+Get attestation data such as identities, factoids, attachments should take a long time to access database and decode data, so you can choose which fields you want to return.
+
+Returned data
+^^^^^^^^^^^^^^
+
+=================  ================================================================
+Parameter name 	   Description                                   
+=================  ================================================================
+no                 Reference number of the attestation
+template_id        The ID of template
+identities         Identities
+factoids           List of factoids
+completed          Return true if factoids is uploaded, or return fasle.
+attachments        List of attachments
+blockchain_hash    The hash of blockchain, return null if it doesn't link to blockchain yet
+=================  ================================================================
+
+attachments is an array, which The "key" of "attachments" is referring as the superscript of the factoids array, and the "value" is an attachment array.
+
+（1）When fields set null, we will get all data, the result is as below::
+
+	{
+		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
+		"data": {
+			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
+			"identities": {
+				"ID": "42012319800127691X",
+				"MO": "15857112383"
+			},
+			"factoids": [
+				{
+					"type": "product",
+					"data": {
+						"name:: "zjmax",
+						"description": "p2g financing platform""
+					}
+				},
+				{
+					"type": "user",
+					"data": {
+						"name": "David Smith",
+						"phone_number": "13234568732",
+						"registered_at": "1466674609",
+						"username": "tom"
+					}
+				}
+			],
+			"completed": true,
+			"attachments": {
+				"1": [
+					"2EHJQPs5j4SZpEKQXQ7r6C",
+					"2F81ZJXosNjzrPJsXKywAu"
+				]
+			},
+			"blockchain_hash": "s5j4SZpEKQXQ7r6C2F81ZJXosNjzrPJsXKywAu"
+		}
+	}
+
+（2）When fields set an empty array, it doesn't return the values of identities, factoids and attachments, the result is as below::
+	
+	{
+		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
+		"data": {
+			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
+			"identities": null,
+			"factoids": null,
+			"completed": true,
+			"attachments": null,
+			"blockchain_hash": "s5j4SZpEKQXQ7r6C2F81ZJXosNjzrPJsXKywAu"
+		}
+	}
+
+So when you want to get the hash of blockchain immediately, it's best way to set field as an empty array.
+
+（3）When fields set an array, such as ["identities"], the result is as below::
+
+	{
+		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
+		"data": {
+			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
+			"identities": {
+				"ID": "42012319800127691X",
+				"MO": "15857112383"
+			},
+			"factoids": null,
+			"completed": true,
+			"attachments": null,
+			"blockchain_hash": "s5j4SZpEKQXQ7r6C2F81ZJXosNjzrPJsXKywAu"
+		}
+	}
+
+Download the attestation file - /attestation/download
+--------------------------------------------------------------
+
+When member upload data to Baoquan, we should take some certain process(rendered by template) to create a Baoquan file. a Baoquan file will be eventually hashed to the blockchain, so it can eventually make a notarised certificate at notary office or make a judicial report at judicial evaluation center.
+
+payload
+^^^^^^^^^^^^^^^
+
+=================  ===============================================  ===============================
+Parameter name 				Description        									 						Mandatory/Optional
+=================  ===============================================  ===============================
+ano                String, reference number of the attestation  			Mandatory
+=================  ===============================================  ===============================
+
+Returned file
+^^^^^^^^^^^^^^^
+
+This interface will get the Baoquan file and filename. The file is body of the result of http message, and the filename is header of http message. Content=Disposition is the header name. The value of header is like below::
+	
+	form-data; name=Content-Disposition; filename=5Yhus2mVSMnQRXobRJCYgt.zip
+
+As Java for example::
+
+	// ommit using apache http client to create http request
+	// closeableHttpResponse is an instance of CloseableHttpResponse
+	HttpEntity httpEntity = closeableHttpResponse.getEntity();
+	Header header = closeableHttpResponse.getFirstHeader(MIME.CONTENT_DISPOSITION);
+	Pattern pattern = Pattern.compile(".*filename=\"(.*)\".*");
+	Matcher matcher = pattern.matcher(header.getValue());
+	String fileName = "";
+	if (matcher.matches()) {
+	fileName = matcher.group(1);
+	}
+	FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+	IOUtils.copy(httpEntity.getContent(), fileOutputStream)
+
