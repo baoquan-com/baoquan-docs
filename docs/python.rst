@@ -3,12 +3,12 @@ Python
 
 If you use pip, you can add dependency at requirements.txt as below::
 
-	eagle-sdk==1.0.3
+	eagle-sdk==1.0.4
 
 .. note:: This SDK should be running at Python 3
 
 Create Baoquan Client
-------------------
+-----------------------
 
 ::
 
@@ -41,7 +41,7 @@ rsa private key should begin with **-----BEGIN RSA PRIVATE KEY-----** and end wi
 	-----END RSA PRIVATE KEY-----
 
 Other initial settings
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Other settings such as API version, request ID generator. You don't configure as default::
 	
@@ -158,7 +158,7 @@ Add factoids
 adding factoids can also upload attachment for factoids, as same as just upload attachment.
 
 Get attestation data
-------------------
+-----------------------
 
 ::
 
@@ -171,7 +171,7 @@ Get attestation data
 get_attestation have two parameters. The first parameter is reference number of attestation. And the second parameter is an array, which can set to returned fields.
 
 Download the attestation file
-------------------
+--------------------------------
 
 ::
 

@@ -10,7 +10,7 @@ If you use composer, you can add dependency as below::
 	}
 
 Create Baoquan Client
-------------------
+------------------------
 
 ::
 
@@ -60,7 +60,7 @@ or begin with **-----BEGIN RSA PRIVATE KEY-----** and end with **-----END RSA PR
 	-----END RSA PRIVATE KEY-----
 
 Other initial settings
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Other settings such as API version, request ID generator. You don't configure as default::
 	
@@ -193,7 +193,7 @@ Add factoids
 adding factoids can also upload attachment for factoids, as same as just upload attachment.
 
 Get attestation data
-------------------
+----------------------------
 
 ::
 
@@ -207,7 +207,7 @@ Get attestation data
 getAttestation have two parameters. The first parameter is reference number of attestation. And the second parameter is an array, which can set to returned fields.
 
 Download the attestation file
-------------------
+--------------------------------
 
 ::
 

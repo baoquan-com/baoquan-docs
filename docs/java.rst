@@ -6,12 +6,12 @@ If you use maven, you can add dependency as below::
 	<dependency>
 	    <groupId>com.baoquan</groupId>
 	    <artifactId>eagle-sdk</artifactId>
-	    <version>1.0.3</version>
+	    <version>1.0.4</version>
 	</dependency>
 
 If you use Gradle, you can add like following::
 	
-	compile group: 'com.baoquan', name: 'eagle-sdk', version: '1.0.3'
+	compile group: 'com.baoquan', name: 'eagle-sdk', version: '1.0.4'
 
 Create Baoquan Client
 ------------------
