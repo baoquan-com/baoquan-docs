@@ -6,12 +6,12 @@ If you use maven, you can add dependency as below::
 	<dependency>
 	    <groupId>com.baoquan</groupId>
 	    <artifactId>eagle-sdk</artifactId>
-	    <version>1.0.5</version>
+	    <version>1.0.7</version>
 	</dependency>
 
 If you use Gradle, you can add like following::
 	
-	compile group: 'com.baoquan', name: 'eagle-sdk', version: '1.0.5'
+	compile group: 'com.baoquan', name: 'eagle-sdk', version: '1.0.7'
 
 Create Baoquan Client
 ------------------
@@ -186,6 +186,60 @@ Download the attestation file
 		FileOutputStream fileOutputStream = new FileOutputStream(downloadFile.getFileName());
 		IOUtils.copy(downloadFile.getFile(), fileOutputStream);
 		fileOutputStream.close();
+	} catch (ServerException e) {
+		System.out.println(e.getMessage());
+	}
+
+Apply for Certification
+---------------------------
+
+Apply for personal certification::
+	
+	try {
+		ApplyCaPayload payload = new ApplyCaPayload();
+		payload.setType(CaType.PERSONAL);
+		payload.setLinkName("Richard Hammond");
+		payload.setLinkIdCard("330184198501184115");
+		payload.setLinkPhone("13378784545");
+		payload.setLinkEmail("123@qq.com");
+		ApplyCaResponse response = client.applyCa(payload, null);
+		System.out.println(response.getData().getNo());
+	} catch (ServerException e) {
+		System.out.println(e.getMessage());
+	}
+
+If enterprise has "three in one" situation, you should use Unified Social Credit Code::
+
+	try {
+		ApplyCaPayload payload = new ApplyCaPayload();
+		payload.setType(CaType.ENTERPRISE);
+		payload.setName("xxx Co., Ltd.");
+		payload.setIcCode("91332406MA27XMXJ27");
+		payload.setLinkName("Richard Hammond");
+		payload.setLinkIdCard("330184198501184115");
+		payload.setLinkPhone("13378784545");
+		payload.setLinkEmail("123@qq.com");
+		ApplyCaResponse response = client.applyCa(payload, null);
+		System.out.println(response.getData().getNo());
+	} catch (ServerException e) {
+		System.out.println(e.getMessage());
+	}
+
+If not, then use business registration code, organization code, tax code to apply for certification::
+
+	try {
+		ApplyCaPayload payload = new ApplyCaPayload();
+		payload.setType(CaType.ENTERPRISE);
+		payload.setName("xxx Co., Ltd.");
+		payload.setIcCode("419001000033792");
+		payload.setOrgCode("177470403");
+		payload.setTaxCode("419001177470403");
+		payload.setLinkName("Richard Hammond");
+		payload.setLinkIdCard("330184198501184115");
+		payload.setLinkPhone("13378784545");
+		payload.setLinkEmail("123@qq.com");
+		ApplyCaResponse response = client.applyCa(payload, null);
+		System.out.println(response.getData().getNo());
 	} catch (ServerException e) {
 		System.out.println(e.getMessage());
 	}

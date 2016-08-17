@@ -6,15 +6,11 @@ The accessing of Baoquan.com API requires https protocol, and digital signature.
 Path
 --------------
 
-The accessing of Baoquan.com API are defined as Stage environment and Formal environment. A template edited under the Formal environment could be used in the Stage environment, however, the data in Stage environment will be deleted regularly.
-
 Baoquan.com will provide API with backward compatibility, different API versions will be denoted as strings as v1, v2.1 etc. The current version is v1.
 
-Formal environment: `https://baoquan.com/api/v1`
+API address: `https://baoquan.com/api/v1`
 
-Stage environment: `https://stg.baoquan.com/api/v1`
-
-Request path = API environment + Interface name, for example: The interface of Attestation is /attestations, therefore, the request path in Formal environment is `https://baoquan.com/api/v1/attestations`
+Request path = API address + Interface name, for example: The interface of Attestation is /attestations, therefore, the request path is `https://baoquan.com/api/v1/attestations`
 
 
 Method

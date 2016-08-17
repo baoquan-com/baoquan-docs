@@ -17,6 +17,8 @@ You can refer to the following shell commend to create your own certificate::
 
 Paste the content of cert.pem file to the text box, and select Sandbox or Formal.
 
+You can edit template in the formal environment, and those also can be used in the sandbox environment. But those will be cleaned periodically. So you should use sandbox access key in the development and test environment, and use formal access key in the production environment.
+
 .. note:: Please keep your private key safe, in addition, we strongly recommend to use the certificate issued by CA institutes as your public key under the Formal environment.
 
 **STEP 3: Construct signature**

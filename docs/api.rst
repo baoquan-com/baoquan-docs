@@ -16,7 +16,7 @@ template_id        String, the ID of template                                   
 identities         Object, item for identities                                     Mandatory
 factoids           Array, factoids set                                             Optional
 completed          Boolean value, whether factoids set is uploaded successfully     Optional, default is true
-attachments        Array, check code of attachments, optional                      Optional
+attachments        Array, information object of attachments, optional                      Optional
 =================  ============================================================== ================================
 
 **Factoid** is an Object, which contains two fields: “type”, “data”, for example::
@@ -120,12 +120,25 @@ Upload multiple attachments as “form” data::
 		],
 		"completed": true,
 		"attachments": {
-			"0": ["checkSum1", "checkSum2"],
+			"0": [
+				"checkSum1", 
+				{
+					"checksum": "checkSum2",
+					"sign": {
+						"F98F99A554E944B6996882E8A68C60B2": ["Party A (signature)", "Party A juristische Person (signature)"],
+						"0A68783469E04CAC95ADEAE995A92E65": ["Party B (signature)"]
+					}
+				}
+			],
 			"1": ["checkSum3"]
 		}
 	}
 
-The “key” of “attachments” is referring as the superscript of the factoids array.
+The “key” of "attachments" is referring as the superscript of the factoids array， for example, "0" correspond with factoids[0]. The "value" of "attachments" is an array, each element correspond with attachment information.
+
+There are two kinds of attachment informations: checksum and sign information, and you must offer checksum. While attachment information contain checksum, you can use String object; While attachment information contain sign  information, you need to use object instead.
+
+.. note:: only pdf attachment can make sign.
 
 The “checksum” is generated from file by SHA256, take Java as an example::
 
@@ -137,6 +150,15 @@ The “checksum” is generated from file by SHA256, take Java as an example::
 
 	// Transform bytes into hexadecimal
 	String checkSum = Hex.encodeHexString(digestBytes);
+
+Sign is an object, the "key" is caId (when member apply Certification, it will return caId), the "value" is the sign keyword array. For example, Richard and Edward would like to sign at "xxx.pdf" paper, Richard call ca interface to get the caId is "F98F99A554E944B6996882E8A68C60B2", Edward call ca interface to get the caId is "0A68783469E04CAC95ADEAE995A92E65", then Richard need to sign at "Party A (signature)" and "Party A juristische Person (signature)", and Edward need to sign at "Party B (signature)", so the sign object is like following::
+
+	"sign": {
+		"F98F99A554E944B6996882E8A68C60B2": ["Party A (signature)", "Party A juristische Person (signature)"],
+		"0A68783469E04CAC95ADEAE995A92E65": ["Party B (signature)"]
+	}
+
+.. note:: One user can sign at different sign channel, but keyword should be keep the same, and can't repeat with the body part.
 
 Returned data
 ^^^^^^^^^^^^^^
@@ -355,8 +377,84 @@ As Java for example::
 	Matcher matcher = pattern.matcher(header.getValue());
 	String fileName = "";
 	if (matcher.matches()) {
-	fileName = matcher.group(1);
+		fileName = matcher.group(1);
 	}
 	FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 	IOUtils.copy(httpEntity.getContent(), fileOutputStream)
 
+
+Apply for Certification - /cas
+--------------------------------------------------------------
+
+If the attachment of attestation need to sign, you must apply for Certification.
+
+payload
+^^^^^^^^^^^^^^^
+
+=================  =========================================================== =========================================
+Parameter name 		 Description                                 				Mandatory/Optional
+=================  =========================================================== =========================================
+type               String，user type：PERSONAL、ENTERPRISE                		Mandatory
+name               enterprise name                                       		Mandatory when user type is ENTERPRISE
+ic_code            enterprise Register Code or Unified Social Credit Code   	Mandatory when user type is ENTERPRISE
+org_code           enterprise oragnization code                        			Mandatory when user type is ENTERPRISE
+tax_code           enterprise tax code                                 			Mandatory when user type is ENTERPRISE
+link_name          user name or enterprise contact user name             		Mandatory
+link_id_card       user ID card or enterprise contact user ID card         		Mandatory
+link_phone         user phone number or enterprise contact user phone number    Mandatory
+link_email         user mail or enterprise contact user mail                	Mandatory
+=================  =========================================================== =========================================
+
+Apply for personal certification::
+	
+	{
+		"type": "PERSONAL",
+		"link_name": "Richard Hammond",
+		"link_id_card": "330184198501184115",
+		"link_phone": "13378784545",
+		"link_email": "123@qq.com"
+	}
+
+If enterprise has "three in one" situation, you should use Unified Social Credit Code::
+	
+	{
+		"type": "ENTERPRISE",
+		"name": "xxx Co., Ltd.",
+		"ic_code": "91332406MA27XMXJ27",
+		"link_name": "Richard Hammond",
+		"link_id_card": "330184198501184115",
+		"link_phone": "13378784545",
+		"link_email": "123@qq.com"
+	}
+
+If not, then use business registration code, organization code, tax code to apply for certification::
+
+	{
+		"type": "ENTERPRISE",
+		"name": "xxx Co., Ltd.",
+		"ic_code": "419001000033792",
+		"org_code": "177470403",
+		"tax_code": "419001177470403",
+		"link_name": "Richard Hammond",
+		"link_id_card": "330184198501184115",
+		"link_phone": "13378784545",
+		"link_email": "123@qq.com"
+	}
+
+returned data
+^^^^^^^^^^^^^^
+
+=================  ================================
+Description 		Description                            
+=================  ================================
+no                  caId                                    
+=================  ================================
+
+For example::
+
+	{
+		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
+		"data": {
+			"no": "F98F99A554E944B6996882E8A68C60B2",
+		}
+	}

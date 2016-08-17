@@ -5,7 +5,7 @@ If you use composer, you can add dependency as below::
 
 	{
 	  "require": {
-	    "baoquan/eagle-sdk": "1.0.5"
+	    "baoquan/eagle-sdk": "1.0.7"
 	  }
 	}
 
@@ -167,7 +167,7 @@ Add factoids
 ::
 
 	try {
-		$response = $this->client->addFactoids([
+		$response = $client->addFactoids([
 			// set attestation reference number
 			'ano'=>'7F189BBB5FA1451EA8601D0693E36FE7', 
 			// list of factoids
@@ -198,7 +198,7 @@ Get attestation data
 ::
 
 	try {
-		$response = $this->client->getAttestation('DB0C8DB14E3C44C7B9FBBE30EB179241');
+		$response = $client->getAttestation('DB0C8DB14E3C44C7B9FBBE30EB179241');
 		var_dump($response['data']);
 	} catch (ServerException $e) {
 		echo $e->getMessage();
@@ -212,7 +212,7 @@ Download the attestation file
 ::
 
 	try {
-		$response = $this->client->downloadAttestation('DB0C8DB14E3C44C7B9FBBE30EB179241');
+		$response = $client->downloadAttestation('DB0C8DB14E3C44C7B9FBBE30EB179241');
 		$file = fopen($response['file_name'], 'w');
 		fwrite($file, $response['file']->getContents());
 		fclose($file);
@@ -221,3 +221,57 @@ Download the attestation file
 	}
 
 response contain two fields, one is file_name, and another is file, which is an instance of \\Psr\\Http\\Message\\StreamInterface.
+
+Apply for Certification
+---------------------------
+
+Apply for personal certification::
+	
+	try {
+		$response = $client->applyCa([
+			'type'=>'PERSONAL',
+			'link_name'=>'Richard Hammond',
+			'link_id_card'=>'330184198501184115',
+			'link_phone'=>'13378784545',
+			'link_email'=>'123@qq.com',
+		]);
+		echo $response['data']['no'];
+	} catch (ServerException $e) {
+		echo $e->getMessage();
+	}
+
+If enterprise has "three in one" situation, you should use Unified Social Credit Code::
+
+	try {
+		$response = $client->applyCa([
+			'type'=>'ENTERPRISE',
+			'name'=>'xxx Co., Ltd.',
+			'ic_code'=>'91332406MA27XMXJ27',
+			'link_name'=>'Richard Hammond',
+			'link_id_card'=>'330184198501184115',
+			'link_phone'=>'13378784545',
+			'link_email'=>'123@qq.com',
+		]);
+		echo $response['data']['no'];
+	} catch (ServerException $e) {
+		echo $e->getMessage();
+	}
+
+If not, then use business registration code, organization code, tax code to apply for certification::
+
+	try {
+		$response = $client->applyCa([
+			'type'=>'ENTERPRISE',
+			'name'=>'xxx Co., Ltd.',
+			'ic_code'=>'419001000033792',
+			'org_code'=>'177470403',
+			'tax_code'=>'419001177470403',
+			'link_name'=>'Richard Hammond',
+			'link_id_card'=>'330184198501184115',
+			'link_phone'=>'13378784545',
+			'link_email'=>'123@qq.com',
+		]);
+		echo $response['data']['no'];
+	} catch (ServerException $e) {
+		echo $e->getMessage();
+	}

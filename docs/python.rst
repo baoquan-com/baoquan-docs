@@ -3,7 +3,7 @@ Python
 
 If you use pip, you can add dependency at requirements.txt as below::
 
-	eagle-sdk==1.0.4
+	eagle-sdk==1.0.7
 
 .. note:: This SDK should be running at Python 3
 
@@ -183,3 +183,54 @@ Download the attestation file
 		print(e.message)
 
 response contain two fields, one is file_name, and another is a file content, which is presented by byte format.
+
+Apply for Certification
+---------------------------
+
+Apply for personal certification::
+	
+	try:
+		response = client.apply_ca({
+			'type': 'PERSONAL',
+			'link_name': 'Richard Hammond',
+			'link_id_card': '330184198501184115',
+			'link_phone': '13378784545',
+			'link_email': '123@qq.com',
+		})
+		print(response['data']['no'])
+	except ServerException as e:
+		print(e.message)
+
+If enterprise has "three in one" situation, you should use Unified Social Credit Code::
+
+	try:
+		response = client.apply_ca({
+			'type': 'ENTERPRISE',
+			'name': 'xxx Co., Ltd.',
+			'ic_code': '91332406MA27XMXJ27',
+			'link_name': 'Richard Hammond',
+			'link_id_card': '330184198501184115',
+			'link_phone': '13378784545',
+			'link_email': '123@qq.com',
+		})
+		print(response['data']['no'])
+	except ServerException as e:
+		print(e.message)
+
+If not, then use business registration code, organization code, tax code to apply for certification::
+
+	try:
+		response = client.apply_ca({
+			'type': 'ENTERPRISE',
+			'name': 'xxx Co., Ltd.',
+			'ic_code': '419001000033792',
+			'org_code': '177470403',
+			'tax_code': '419001177470403',
+			'link_name': 'Richard Hammond',
+			'link_id_card': '330184198501184115',
+			'link_phone': '13378784545',
+			'link_email': '123@qq.com',
+		})
+		print(response['data']['no'])
+	except ServerException as e:
+		print(e.message)
