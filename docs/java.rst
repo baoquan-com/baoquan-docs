@@ -20,7 +20,7 @@ Create Baoquan Client
 
 	BaoquanClient client = new BaoquanClient();
 	// set API address, like Baoquan test environment
-	client.setHost("https://stg.baoquan.com"); 
+	client.setHost("https://baoquan.com"); 
 	// set access key
 	client.setAccessKey("fsBswNzfECKZH9aWyh47fc"); 
 	// set absolute path of rsa private key file

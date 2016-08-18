@@ -16,7 +16,7 @@ Create Baoquan Client
 
 	client = BaoquanClient()
 	// set API address, like Baoquan test environment
-	client.host = 'https://stg.baoquan.com'
+	client.host = 'https://baoquan.com'
 	// set access key
 	client.access_key = 'fsBswNzfECKZH9aWyh47fc'
 	// set absolute path of rsa private key file
