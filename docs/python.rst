@@ -3,7 +3,7 @@ Python
 
 If you use pip, you can add dependency at requirements.txt as below::
 
-	eagle-sdk==1.0.7
+	eagle-sdk==1.0.8
 
 .. note:: This SDK should be running at Python 3
 

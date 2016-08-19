@@ -5,7 +5,7 @@ If you use composer, you can add dependency as below::
 
 	{
 	  "require": {
-	    "baoquan/eagle-sdk": "1.0.7"
+	    "baoquan/eagle-sdk": "1.0.8"
 	  }
 	}
 
