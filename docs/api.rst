@@ -9,25 +9,31 @@ When member created the template on Baoquan.com, he/she/it can send data, which 
 payload
 ^^^^^^^^^^^^^^^
 
-=================  ============================================================== ================================
-Parameter name     Description                                                     Mandatory/Optional
-=================  ============================================================== ================================
-template_id        String, the ID of template                                      Mandatory
-identities         Object, item for identities                                     Mandatory
-factoids           Array, factoids set                                             Optional
-completed          Boolean value, whether factoids set is uploaded successfully     Optional, default is true
-attachments        Array, information object of attachments, optional                      Optional
-=================  ============================================================== ================================
+=================  ==================================================================  ==================================
+ Parameter name     	Description                                                     Mandatory/Optional
+=================  ==================================================================  ==================================
+ unique_id			String, the unique id of attestation, length < 255					Mandatory
+ template_id        String, the ID of template                                      	Mandatory
+ identities         Object, item for identities                                     	Mandatory
+ factoids           Array, factoids set                                             	Optional
+ completed          Boolean value, whether factoids set is uploaded successfully     	Optional, default is true
+ attachments        Array, information object of attachments, optional                  Optional
+=================  ==================================================================  ==================================
+
+unique_id is the unique code of attestation, which prevent from repeat upload same attestation cause by network timeout or other exceptions. If an attestation uploads several times, we just save once, and return the same attestion id.
 
 **Factoid** is an Object, which contains two fields: “type”, “data”, for example::
 
 	{
+		"unique_id": "9de7be94-a697-4398-945a-678d3f916b9f",
 		"type": "hash",
 		"data": {
 			"userName": "David Smith",
 			"idCard": "42012319800127691X"
 		}
 	}
+
+The "unique_id" of factoid is similar to the "unique_id" of attestation. If the same factoid contents upload several times at the one attestation, we just handle once.
 
 The “type” is the user defined name of factoids, “data” is the field value of factoids, as following：
 
@@ -42,6 +48,7 @@ Template could contain multiple customisable factoids, for example, factoA and f
 Assume payload is as below::
 
 	{
+		"unique_id": "acafa00d-5579-4fe5-93c1-de89ec82006e",
 		"template_id": "2hSWTZ4oqVEJKAmK2RiyT4",
 		"identities": {
 			"MO": "15857112383",
@@ -49,6 +56,7 @@ Assume payload is as below::
 		},
 		"factoids": [
 			{
+				"unique_id": "9de7be94-a697-4398-945a-678d3f916b9f",
 				"type": "hash",
 				"data": {
 					"userName": "Richard Hammond",
@@ -82,10 +90,12 @@ Upload a single attachment as “form” data::
 	</form>
 
 	payload = {
+		"unique_id": "...",
 		"template_id": "...",
 		"identities": {...},
 		"factoids": [
 			{
+				"unique_id": "...",
 				"type": "...",
 				"data": {...}
 			}
@@ -106,14 +116,17 @@ Upload multiple attachments as “form” data::
 	</form>
 
 	payload = {
+		"unique_id": "...",
 		"template_id": "...",
 		"identities": {...},
 		"factoids": [
 			{
+				"unique_id": "...",
 				"type": "...",
 				"data": {...}
 			},
 			{
+				"unique_id": "...",
 				"type": "...",
 				"data": {...}
 			}
@@ -203,6 +216,7 @@ For example::
 		"ano": "2hSWTZ4oqVEJKAmK2RiyT4",
 		"factoids": [
 			{
+				"unique_id": "9de7be94-a697-4398-945a-678d3f916b9f",
 				"type": "hash",
 				"data": {
 					"userName": "Edward Snow",
@@ -277,6 +291,7 @@ attachments is an array, which The "key" of "attachments" is referring as the su
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
 		"data": {
 			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"unique_id": "acafa00d-5579-4fe5-93c1-de89ec82006e",
 			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
 			"identities": {
 				"ID": "42012319800127691X",
@@ -284,6 +299,7 @@ attachments is an array, which The "key" of "attachments" is referring as the su
 			},
 			"factoids": [
 				{
+					"unique_id": "28fcdf56-bff3-4ed9-9f87-c8d35ad49e0c",
 					"type": "product",
 					"data": {
 						"name:: "zjmax",
@@ -291,6 +307,7 @@ attachments is an array, which The "key" of "attachments" is referring as the su
 					}
 				},
 				{
+					"unique_id": "e68eb8bc-3d7a-4e22-be47-d7999fb40c9a",
 					"type": "user",
 					"data": {
 						"name": "David Smith",
@@ -317,6 +334,7 @@ attachments is an array, which The "key" of "attachments" is referring as the su
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
 		"data": {
 			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"unique_id": "acafa00d-5579-4fe5-93c1-de89ec82006e",
 			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
 			"identities": null,
 			"factoids": null,
@@ -334,6 +352,7 @@ So when you want to get the hash of blockchain immediately, it's best way to set
 		"request_id": "2XiTgZ2oVrBgGqKQ1ruCKh",
 		"data": {
 			"no": "DB0C8DB14E3C44C7B9FBBE30EB179241",
+			"unique_id": "acafa00d-5579-4fe5-93c1-de89ec82006e",
 			"template_id" : "5Yhus2mVSMnQRXobRJCYgt",
 			"identities": {
 				"ID": "42012319800127691X",

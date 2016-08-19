@@ -92,6 +92,8 @@ Create attestation
 	// use client createAttestation method to create CreateAttestationResponse instance, if it can be created then return attestation, or throw failure message
 	try {
 		$response = $client->createAttestation([
+			// set unique id
+ 			'unique_id'=>'5bf54bc4-ec69-4a5d-b6e4-a3f670f795f3',
 			// set template id
 			'template_id'=>'5Yhus2mVSMnQRXobRJCYgt', 
 			// set attestation owner's identities
@@ -103,6 +105,7 @@ Create attestation
 			'factoids'=>[
 			    // product factoid
 			    [
+			        'unique_id'=>'9826dc2a-f5af-4433-ab8d-f515630677c2',
 			        'type'=>'product',
 			        'data'=>[
 			            'name'=>'zjmax',
@@ -111,6 +114,7 @@ Create attestation
 			    ],
 			    // user factoid
 			    [
+			        'unique_id'=>'c83d838e-3844-4689-addf-ca0f01171e7c',
 			        'type'=>'user',
 			        'data'=>[
 			            'name'=>'Tom Hammond',
@@ -173,6 +177,7 @@ Add factoids
 			// list of factoids
 			'factoids'=>[
 			    [
+			        'unique_id'=>'c83d838e-3844-4689-addf-ca0f01171e7c',
 			        'type'=>'user',
 			        'data'=>[
 			            'name'=>'Tom Hammond',

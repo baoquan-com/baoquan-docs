@@ -63,6 +63,8 @@ Create attestation
 	// use client create_attestation method to create CreateAttestationResponse instance, if it can be created then return attestation, or throw failure message
 	try:
 		response = client.create_attestation({
+			// set unique id
+ 			'unique_id': 'd310a8f6-6af2-4dc9-baa0-1231cf910dbb',
 			// set template id
 			'template_id': '5Yhus2mVSMnQRXobRJCYgt',
 			// set attestation owner's identities
@@ -73,6 +75,7 @@ Create attestation
 			// factoids list
 			'factoids': [
 			    {
+			        'unique_id': '72aa5bfc-0a62-4e09-9df0-fbf8a4fb7e8f',
 			        'type': 'product',
 			        'data': {
 			            'name': 'zjmax',
@@ -80,6 +83,7 @@ Create attestation
 			        }
 			    },
 			    {
+			        'unique_id': '4da45cbc-c234-4296-b566-35d03a092f5a',
 			        'type': 'user',
 			        'data': {
 			            'name': 'Tom Hammond',
@@ -141,6 +145,7 @@ Add factoids
 			// factoids list
 			'factoids': [
 			    {
+			        'unique_id': '4da45cbc-c234-4296-b566-35d03a092f5a',
 			        'type': 'user',
 			        'data': {
 			            'name': 'Tom Hammond',

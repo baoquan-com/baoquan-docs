@@ -14,7 +14,7 @@ If you use Gradle, you can add like following::
 	compile group: 'com.baoquan', name: 'eagle-sdk', version: '1.0.8'
 
 Create Baoquan Client
-------------------
+---------------------------
 
 ::
 
@@ -46,7 +46,7 @@ rsa private key should begin with **-----BEGIN PRIVATE KEY-----** and end with *
 	-----END PRIVATE KEY-----
 
 Other initial settings
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Other settings such as API version, request ID generator. You don't configure as default::
 	
@@ -67,11 +67,13 @@ Other settings such as API version, request ID generator. You don't configure as
 When client is created, you can use client method to send request message
 
 Create attestation
-------------------
+---------------------
 
 ::
 
 	CreateAttestationPayload payload = new CreateAttestationPayload();
+	// set unique id
+ 	payload.setUniqueId("e68eb8bc-3d7a-4e22-be47-d7999fb40c9a");
 	// set template id
 	payload.setTemplateId("5Yhus2mVSMnQRXobRJCYgt"); 
 	// set factoids whether upload or not, if set completed as true, then you can't append factoids
@@ -88,6 +90,7 @@ Create attestation
 	Product product = new Product();
 	product.setName("xxx company");
 	product.setDescription("p2g financing platform");
+	factoid.setUnique_id("e13912e2-ccce-47df-997a-9f44eb2c7b6c");
 	factoid.setType("product");
 	factoid.setData(product);
 	factoids.add(factoid);
@@ -98,6 +101,7 @@ Create attestation
 	user.setRegistered_at("1466674609");
 	user.setUsername("tom");
 	user.setPhone_number("13452345987");
+	factoid.setUnique_id("5bf54bc4-ec69-4a5d-b6e4-a3f670f795f3");
 	factoid.setType("user");
 	factoid.setData(user);
 	factoids.add(factoid);
@@ -147,6 +151,7 @@ Add factoids
 	user.setRegistered_at("1466674609");
 	user.setUsername("tom");
 	user.setPhone_number("13452345987");
+	factoid.setUnique_id("5bf54bc4-ec69-4a5d-b6e4-a3f670f795f3");
 	factoid.setType("user");
 	factoid.setData(user);
 	factoids.add(factoid);
@@ -162,7 +167,7 @@ Add factoids
 adding factoids can also upload attachment for factoids, as same as just upload attachment.
 
 Get attestation data 
-------------------
+--------------------------
 
 ::
 
@@ -176,7 +181,7 @@ Get attestation data
 getAttestation have two parameters. The first parameter is reference number of attestation. And the second parameter is an array, which can set to returned fields.
 
 Download the attestation file
-------------------
+------------------------------------
 
 ::
 
