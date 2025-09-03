@@ -1,5 +1,5 @@
-# Baoquan API V1 Document
+# BaoQuan API V1 Document
 
-[![docs](https://readthedocs.org/projects/docs/badge/?version=latest)](http://baoquan.readthedocs.io/en/latest/?badge=latest)
+[![docs](https://readthedocs.org/projects/docs/badge/?version=latest)](https://docs.baoquan.com/projects/v1/en/latest/)
 
-See [readthedocs](http://docs.readthedocs.io/en/latest/index.html)
+See [readthedocs](https://docs.baoquan.com/projects/v1/en/latest/)
