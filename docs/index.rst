@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to use API document of Baoquan.com
+Welcome to use API V1 document of Baoquan.com
 ==============================================
 
 .. toctree::
